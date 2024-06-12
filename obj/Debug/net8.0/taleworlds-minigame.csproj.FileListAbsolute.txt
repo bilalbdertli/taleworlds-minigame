@@ -1,0 +1,14 @@
+C:\Users\Bilal Berkam Dertli\Documents\GitHub\taleworlds-minigame\bin\Debug\net8.0\taleworlds-minigame.exe
+C:\Users\Bilal Berkam Dertli\Documents\GitHub\taleworlds-minigame\bin\Debug\net8.0\taleworlds-minigame.deps.json
+C:\Users\Bilal Berkam Dertli\Documents\GitHub\taleworlds-minigame\bin\Debug\net8.0\taleworlds-minigame.runtimeconfig.json
+C:\Users\Bilal Berkam Dertli\Documents\GitHub\taleworlds-minigame\bin\Debug\net8.0\taleworlds-minigame.dll
+C:\Users\Bilal Berkam Dertli\Documents\GitHub\taleworlds-minigame\bin\Debug\net8.0\taleworlds-minigame.pdb
+C:\Users\Bilal Berkam Dertli\Documents\GitHub\taleworlds-minigame\obj\Debug\net8.0\taleworlds-minigame.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Bilal Berkam Dertli\Documents\GitHub\taleworlds-minigame\obj\Debug\net8.0\taleworlds-minigame.AssemblyInfoInputs.cache
+C:\Users\Bilal Berkam Dertli\Documents\GitHub\taleworlds-minigame\obj\Debug\net8.0\taleworlds-minigame.AssemblyInfo.cs
+C:\Users\Bilal Berkam Dertli\Documents\GitHub\taleworlds-minigame\obj\Debug\net8.0\taleworlds-minigame.csproj.CoreCompileInputs.cache
+C:\Users\Bilal Berkam Dertli\Documents\GitHub\taleworlds-minigame\obj\Debug\net8.0\taleworlds-minigame.dll
+C:\Users\Bilal Berkam Dertli\Documents\GitHub\taleworlds-minigame\obj\Debug\net8.0\refint\taleworlds-minigame.dll
+C:\Users\Bilal Berkam Dertli\Documents\GitHub\taleworlds-minigame\obj\Debug\net8.0\taleworlds-minigame.pdb
+C:\Users\Bilal Berkam Dertli\Documents\GitHub\taleworlds-minigame\obj\Debug\net8.0\taleworlds-minigame.genruntimeconfig.cache
+C:\Users\Bilal Berkam Dertli\Documents\GitHub\taleworlds-minigame\obj\Debug\net8.0\ref\taleworlds-minigame.dll

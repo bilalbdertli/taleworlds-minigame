@@ -122,13 +122,10 @@ namespace taleworlds_minigame {
             public Agent FindAgent(int id) {
                 return _agents.FirstOrDefault(a => a.Id == id);
             }
-        }
 
-        public enum Direction {
-            Up,
-            Down,
-            Left,
-            Right
+            public override string ToString() {
+                return "Tile at (" + _x + ", " + _y + ") with " + NumberOfAgents + " agents: " + string.Join("\n", _agents);
+            }
         }
     }
 }

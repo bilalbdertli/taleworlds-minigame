@@ -35,8 +35,10 @@ namespace taleworlds_minigame {
                 return _hp;
             }
             set {
-                if(value < 0) {
+                if(value <= 0) {
                     _hp = 0;
+                    isDead = true;
+                    Location?.RemoveAgent(this);
                 } else if(value > MaxHP) {
                     _hp = MaxHP;
                 } else {
@@ -119,11 +121,17 @@ namespace taleworlds_minigame {
             }
             var enemy = Location?.FindAgent(targetId);
             if(enemy != null) {
-                Console.WriteLine("Attacking enemy: " + enemy);
-                bool didTakeDamage = enemy.TakeDamage(AP);
-                if(didTakeDamage) {
-                    XP += 10 * enemy.Level;
+                if(enemy == this) {
+                    Console.WriteLine("Attacking yourself: " + enemy);
+                    bool didTakeDamage = enemy.TakeDamage(AP);
                     return true;
+                } else {
+                    Console.WriteLine("Attacking enemy: " + enemy);
+                    bool didTakeDamage = enemy.TakeDamage(AP);
+                    if(didTakeDamage) {
+                        XP += 10 * enemy.Level;
+                        return true;
+                    }
                 }
             }
             return false;
@@ -137,10 +145,6 @@ namespace taleworlds_minigame {
             if(damageTaken > 0) {
                 Console.WriteLine("Agent " + Id + " took " + damageTaken + " damage");
                 _hp -= damageTaken;
-                if(_hp <= 0) {
-                    isDead = true;
-                    Location?.RemoveAgent(this);
-                }
                 return true;
             }
             return false;
@@ -160,11 +164,18 @@ namespace taleworlds_minigame {
             return false;
         }
 
-        public void Move(Map.Direction dir) {
+        public void Move(Direction dir) {
             if(isDead) {
                 return;
             }
             Game.CurrentGame.Map.MoveAgent(this, dir);
+        }
+
+        public string LookAround() {
+            if(isDead) {
+                return "Agent is dead";
+            }
+            return Location.ToString();
         }
 
         public override string ToString() {

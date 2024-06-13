@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 namespace taleworlds_minigame {
     public class Map {
 
-        private int _lastId;
+        private readonly int _width;
 
-        private int _width;
-
-        private int _height;
+        private readonly int _height;
 
         public int Width {
             get {
@@ -25,50 +23,31 @@ namespace taleworlds_minigame {
             }
         }
 
-        public int LastId {
+        private readonly List<List<Tile>> _tiles = new List<List<Tile>>();
+
+        public IReadOnlyList<IReadOnlyList<Tile>> Tiles {
             get {
-                return _lastId;
+                return _tiles;
             }
         }
 
-        private Agent _player;
 
-        public Agent Player {
-            get {
-                return _player;
-            }
-        }
-
-        List<List<Tile>> _tiles = new List<List<Tile>>();
-
-        public static Map CurrentMap = new Map();
-
-
-        Map(int width = 5, int height = 5) {
-            _lastId = 0;
+        public Map(int width, int height) {
+            _width = width;
+            _height = height;
             for(int i = 0; i < width; i++) {
-                List<Tile> row = new List<Tile>();
+                var row = new List<Tile>();
                 for(int j = 0; j < height; j++) {
                     row.Add(new Tile(i, j));
                 }
                 _tiles.Add(row);
             }
-
-            Agent agent = new Agent(10);
-            agent.Location = _tiles[0][0];
-            _player = agent;
-        }
-
-        public bool AssignId(Agent agent) {
-            agent.Id = _lastId;
-            if(agent.Id != _lastId) {
-                return false;
-            }
-            _lastId++;
-            return true;
         }
 
         public void MoveAgent(Agent agent, Direction direction) {
+            if(agent.Location == null) {
+                return;
+            }
             if(direction == Direction.Left) {
                 if(agent.Location.X > 0) {
                     agent.Location = _tiles[agent.Location.X - 1][agent.Location.Y];
@@ -88,17 +67,13 @@ namespace taleworlds_minigame {
             }
         }
 
-
-
-
-
         public class Tile {
-            private int _x;
-            private int _y;
+            private readonly int _x;
+            private readonly int _y;
 
-            private List<Agent> _agents = new List<Agent>();
+            private readonly List<Agent> _agents = new List<Agent>();
 
-            public IEnumerable<Agent> Agents {
+            public IReadOnlyList<Agent> Agents {
                 get {
                     return _agents;
                 }
@@ -116,9 +91,15 @@ namespace taleworlds_minigame {
                 }
             }
 
+            public int NumberOfAgents {
+                get {
+                    return _agents.Count;
+                }
+            }
+
             public Tile(int x, int y) {
-                this._x = x;
-                this._y = y;
+                _x = x;
+                _y = y;
             }
 
             public void AddAgent(Agent agent) {
@@ -132,11 +113,14 @@ namespace taleworlds_minigame {
                 if(agent.Location != this) {
                     return;
                 }
-                _agents.Remove(agent);
+                bool didRemoved = _agents.Remove(agent);
+                if(didRemoved) {
+                    agent.Location = null;
+                }
             }
 
-            public bool IsOccupied() {
-                return _agents.Count > 0;
+            public Agent FindAgent(int id) {
+                return _agents.FirstOrDefault(a => a.Id == id);
             }
         }
 

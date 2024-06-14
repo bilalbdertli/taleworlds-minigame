@@ -52,6 +52,11 @@ namespace taleworlds_minigame {
                         Game.CurrentGame.SpawnEnemy(RandomTW.Next(0, Game.CurrentGame.Map.Width-1), RandomTW.Next(0, Game.CurrentGame.Map.Height-1), Level + 1);
                     }
                     Console.WriteLine("Agent " + Id + " has died");
+                    if(this == Game.CurrentGame.Player) {
+                        Console.WriteLine("Game Over");
+                        Console.WriteLine("Restarting");
+                        Game.CurrentGame = new Game(5, 5);
+                    }
                 } else if(value > MaxHP) {
                     _hp = MaxHP;
                 } else {

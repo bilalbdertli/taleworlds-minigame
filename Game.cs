@@ -20,7 +20,7 @@ namespace taleworlds_minigame {
 
         public Game(int w, int h) {
             Map = new Map(w, h);
-            SpawnPlayer(0, 0);
+            SpawnPlayer(0, 0, 2);
             SpawnEnemy(1, 1, 1);
         }
 

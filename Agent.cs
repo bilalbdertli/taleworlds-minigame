@@ -229,19 +229,19 @@ namespace taleworlds_minigame {
             return Game.CurrentGame.Map.GetAdjacentTile(Location, direction);
         }
 
-        public string LookNorth() {
+        public int LookNorth() {
             return EvaluateTile(LookInDirection(Direction.Up));
         }
 
-        public string LookSouth() {
+        public int LookSouth() {
             return EvaluateTile(LookInDirection(Direction.Down));
         }
 
-        public string LookEast() {
+        public int LookEast() {
             return EvaluateTile(LookInDirection(Direction.Right));
         }
 
-        public string LookWest() {
+        public int LookWest() {
             return EvaluateTile(LookInDirection(Direction.Left));
         }
         
@@ -256,6 +256,22 @@ namespace taleworlds_minigame {
                 return $"There are no enemies to the {tile.DirectionFrom(Location)}.";
             }
         }
+        
+        public void DecideNextMove() {
+            var options = new Dictionary<Direction, int> {
+                { Direction.Up, LookNorth() },
+                { Direction.Down, LookSouth() },
+                { Direction.Left, LookWest() },
+                { Direction.Right, LookEast() }
+            };
+
+            // Choose the direction with the fewest enemies
+            var bestOption = options.OrderBy(opt => opt.Value).FirstOrDefault().Key;
+
+            // Perform the move
+            Move(bestOption);
+        }
+
         
     }
 }

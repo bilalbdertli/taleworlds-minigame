@@ -102,17 +102,27 @@ namespace taleworlds_minigame {
                 _y = y;
             }
 
+            private void EnemyAttack() {
+               foreach(var agent in _agents) {
+                    if(agent.IsEnemy) {
+                        agent.Attack(Game.CurrentGame.Player.Id);
+                    }
+                }
+            }
+
             public void AddAgent(Agent agent) {
                 if(agent.Location != this || _agents.FirstOrDefault(a => a.Id == agent.Id) != null) {
                     return;
                 }
                 _agents.Add(agent);
+                EnemyAttack();
             }
 
             public void RemoveAgent(Agent agent) {
                 if(agent.Location != this) {
                     return;
                 }
+                EnemyAttack();
                 bool didRemoved = _agents.Remove(agent);
                 if(didRemoved) {
                     agent.Location = null;

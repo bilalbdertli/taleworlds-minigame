@@ -24,9 +24,17 @@ namespace taleworlds_minigame {
 
         private bool _isDead = false;
 
+        private bool _isEnemy = false;
+
         public bool IsDead {
             get {
                 return _isDead;
+            }
+        }
+
+        public bool IsEnemy {
+            get {
+                return _isEnemy;
             }
         }
 
@@ -108,11 +116,12 @@ namespace taleworlds_minigame {
             }
         }
 
-        public Agent(Map.Tile loc, int level = 1) {
+        public Agent(Map.Tile loc, int level = 1, bool isEnemy = false) {
             Level = level;
             HP = MaxHP;
             _id = _agentCount++;
             Location = loc;
+            _isEnemy = isEnemy;
         }
 
         public bool Attack(int targetId) {
@@ -144,6 +153,9 @@ namespace taleworlds_minigame {
         public bool TakeDamage(HitInfo damage) {
             if(IsDead) {
                 return false;
+            }
+            if(damage.AgentId == Game.CurrentGame.Player.Id) {
+                _isEnemy = true;
             }
             int damageTaken = damage.Damage - DP;
             if(damageTaken > 0) {

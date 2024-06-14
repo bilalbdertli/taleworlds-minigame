@@ -23,14 +23,18 @@ namespace taleworlds_minigame {
             SpawnPlayer(0, 0);
         }
 
-        public Agent SpawnAgent(int x, int y, int level = 1) {
-            return new Agent(Map.Tiles[x][y], level);
+        public Agent SpawnAgent(int x, int y, int level = 1, bool isEnemy = false) {
+            return new Agent(Map.Tiles[x][y], level, isEnemy);
         }
 
         public void SpawnPlayer(int x, int y, int level = 1) {
             if(_player == null || _player.IsDead) {
                 _player = SpawnAgent(x, y, level);
             }
+        }
+
+        public void SpawnEnemy(int x, int y, int level = 1) {
+            _player = SpawnAgent(x, y, level, true);
         }
     }
 }

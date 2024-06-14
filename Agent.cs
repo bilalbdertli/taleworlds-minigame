@@ -211,39 +211,39 @@ namespace taleworlds_minigame {
             Game.CurrentGame.Map.MoveAgent(this, dir);
         }
 
-        public string LookAround() {
+        public void LookAround() {
             if(IsDead) {
-                return "Agent is dead";
+                Console.WriteLine("Agent is dead");
             }
-            return Location.ToString();
+            Console.WriteLine(Location.ToString());
         }
 
-        public string LookNorth() {
+        public void LookNorth() {
             if(IsDead) {
-                return "Agent is dead";
+                Console.WriteLine("Agent is dead");
             }
-            return LookInDirection(Direction.Up).ToString();
+            Console.WriteLine(LookInDirection(Direction.Up).ToString());
         }
 
-        public string LookSouth() {
+        public void LookSouth() {
             if(IsDead) {
-                return "Agent is dead";
+                Console.WriteLine("Agent is dead");
             }
-            return LookInDirection(Direction.Down).ToString();
+            Console.WriteLine(LookInDirection(Direction.Down).ToString());
         }
 
-        public string LookEast() {
+        public void LookEast() {
             if(IsDead) {
-                return "Agent is dead";
+                Console.WriteLine( "Agent is dead");
             }
-            return LookInDirection(Direction.Right).ToString();
+            Console.WriteLine(LookInDirection(Direction.Right).ToString());
         }
 
-        public string LookWest() {
+        public void LookWest() {
             if(IsDead) {
-                return "Agent is dead";
+                Console.WriteLine("Agent is dead");
             }
-            return LookInDirection(Direction.Left).ToString();
+            Console.WriteLine(LookInDirection(Direction.Left).ToString());
         }
 
         public override string ToString() {

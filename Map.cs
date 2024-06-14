@@ -43,6 +43,31 @@ namespace taleworlds_minigame {
                 _tiles.Add(row);
             }
         }
+        public Tile GetAdjacentTile(Tile currentTile, Direction direction) {
+            int newX = currentTile.X;
+            int newY = currentTile.Y;
+
+            switch (direction) {
+                case Direction.Left:
+                    newX -= 1;
+                    break;
+                case Direction.Right:
+                    newX += 1;
+                    break;
+                case Direction.Up:
+                    newY -= 1;
+                    break;
+                case Direction.Down:
+                    newY += 1;
+                    break;
+            }
+
+            // Check bounds
+            if (newX >= 0 && newX < Width && newY >= 0 && newY < Height) {
+                return _tiles[newX][newY];
+            }
+            return null; // Out of bounds, cannot move to there 
+        }
 
         public void MoveAgent(Agent agent, Direction direction) {
             if(agent.Location == null) {

@@ -221,5 +221,41 @@ namespace taleworlds_minigame {
             public int AgentId { get; set; }
             public int Damage { get; set; }
         }
+        
+        private Tile LookInDirection(Direction direction) {
+            if (Location == null || IsDead) {
+                return null;
+            }
+            return Game.CurrentGame.Map.GetAdjacentTile(Location, direction);
+        }
+
+        public string LookNorth() {
+            return EvaluateTile(LookInDirection(Direction.Up));
+        }
+
+        public string LookSouth() {
+            return EvaluateTile(LookInDirection(Direction.Down));
+        }
+
+        public string LookEast() {
+            return EvaluateTile(LookInDirection(Direction.Right));
+        }
+
+        public string LookWest() {
+            return EvaluateTile(LookInDirection(Direction.Left));
+        }
+        
+        private string EvaluateTile(Tile tile) {
+            if (tile == null) {
+                return "No tile in that direction.";
+            }
+            int enemyCount = tile.Agents.Count(a => a.IsEnemy && !a.IsDead);
+            if (enemyCount > 0) {
+                return $"There are {enemyCount} enemies to the {tile.DirectionFrom(Location)}.";
+            } else {
+                return $"There are no enemies to the {tile.DirectionFrom(Location)}.";
+            }
+        }
+        
     }
 }

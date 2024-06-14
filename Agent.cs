@@ -22,11 +22,11 @@ namespace taleworlds_minigame {
 
         private Map.Tile _currentLocation;
 
-        private bool isDead = false;
+        private bool _isDead = false;
 
         public bool IsDead {
             get {
-                return isDead;
+                return _isDead;
             }
         }
 
@@ -37,7 +37,7 @@ namespace taleworlds_minigame {
             set {
                 if(value <= 0) {
                     _hp = 0;
-                    isDead = true;
+                    _isDead = true;
                     Location?.RemoveAgent(this);
                 } else if(value > MaxHP) {
                     _hp = MaxHP;
@@ -49,7 +49,7 @@ namespace taleworlds_minigame {
 
         public int MaxHP {
             get {
-                return 4 * _level;
+                return 4 * Level;
             }
         }
 
@@ -92,13 +92,13 @@ namespace taleworlds_minigame {
 
         public int AP { 
             get {
-                return _level * 2;
+                return RandomTW.Next(Level, Level * 2);
             }
         }
 
         public int DP {
             get {
-                return _level /2;
+                return RandomTW.Next(Level/2, Level);
             }
         }
 
@@ -116,7 +116,7 @@ namespace taleworlds_minigame {
         }
 
         public bool Attack(int targetId) {
-            if(isDead) {
+            if(IsDead) {
                 return false;
             }
             var enemy = Location?.FindAgent(targetId);
@@ -126,11 +126,11 @@ namespace taleworlds_minigame {
                     Damage = AP
                 };
                 if(enemy == this) {
-                    Console.WriteLine("Attacking yourself: " + enemy);
+                    Console.WriteLine("Attacking yourself");
                     bool didTakeDamage = enemy.TakeDamage(hit);
                     return true;
                 } else {
-                    Console.WriteLine("Attacking enemy: " + enemy);
+                    Console.WriteLine("Agent " + Id + " Attacking enemy: Agent " + enemy.Id);
                     bool didTakeDamage = enemy.TakeDamage(hit);
                     if(didTakeDamage) {
                         XP += 10 * enemy.Level;
@@ -142,7 +142,7 @@ namespace taleworlds_minigame {
         }
 
         public bool TakeDamage(HitInfo damage) {
-            if(isDead) {
+            if(IsDead) {
                 return false;
             }
             int damageTaken = damage.Damage - DP;
@@ -159,7 +159,7 @@ namespace taleworlds_minigame {
         }
 
         private void _counterAttack(int id) {
-            if(isDead || id == Id || this == Game.CurrentGame.Player) {
+            if(IsDead || id == Id || this == Game.CurrentGame.Player) {
                 return;
             }
             var enemy = Location?.FindAgent(id);
@@ -168,7 +168,7 @@ namespace taleworlds_minigame {
                     AgentId = Id,
                     Damage = AP
                 };
-                Console.WriteLine("Counter Attacking enemy: " + enemy);
+                Console.WriteLine("Agent " + Id + " Counter Attacking enemy: Agent " + enemy.Id);
                 bool didTakeDamage = enemy.TakeDamage(hit);
                 if(didTakeDamage) {
                     XP += 10 * enemy.Level;
@@ -177,7 +177,7 @@ namespace taleworlds_minigame {
         }
 
         public bool Heal(int amount) {
-            if(isDead) {
+            if(IsDead) {
                 return false;
             }
             if(amount > 0) {
@@ -188,14 +188,14 @@ namespace taleworlds_minigame {
         }
 
         public void Move(Direction dir) {
-            if(isDead) {
+            if(IsDead) {
                 return;
             }
             Game.CurrentGame.Map.MoveAgent(this, dir);
         }
 
         public string LookAround() {
-            if(isDead) {
+            if(IsDead) {
                 return "Agent is dead";
             }
             return Location.ToString();

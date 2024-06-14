@@ -47,6 +47,10 @@ namespace taleworlds_minigame {
                     _hp = 0;
                     _isDead = true;
                     Location?.RemoveAgent(this);
+                    if(IsEnemy) {
+                        Game.CurrentGame.SpawnEnemy(RandomTW.Next(0, Game.CurrentGame.Map.Width-1), RandomTW.Next(0, Game.CurrentGame.Map.Height-1), Level);
+                        Game.CurrentGame.SpawnEnemy(RandomTW.Next(0, Game.CurrentGame.Map.Width-1), RandomTW.Next(0, Game.CurrentGame.Map.Height-1), Level + 1);
+                    }
                     Console.WriteLine("Agent " + Id + " has died");
                 } else if(value > MaxHP) {
                     _hp = MaxHP;

@@ -21,6 +21,7 @@ namespace taleworlds_minigame {
         public Game(int w, int h) {
             Map = new Map(w, h);
             SpawnPlayer(0, 0);
+            SpawnEnemy(1, 1, 1);
         }
 
         public Agent SpawnAgent(int x, int y, int level = 1, bool isEnemy = false) {

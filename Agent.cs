@@ -47,6 +47,7 @@ namespace taleworlds_minigame {
                     _hp = 0;
                     _isDead = true;
                     Location?.RemoveAgent(this);
+                    Console.WriteLine("Agent " + Id + " has died");
                 } else if(value > MaxHP) {
                     _hp = MaxHP;
                 } else {
@@ -129,7 +130,7 @@ namespace taleworlds_minigame {
                 return false;
             }
             var enemy = Location?.FindAgent(targetId);
-            if(enemy != null) {
+            if(enemy != null && !enemy.IsDead) {
                 var hit = new HitInfo {
                     AgentId = Id,
                     Damage = AP
@@ -141,10 +142,14 @@ namespace taleworlds_minigame {
                 } else {
                     Console.WriteLine("Agent " + Id + " Attacking enemy: Agent " + enemy.Id);
                     bool didTakeDamage = enemy.TakeDamage(hit);
-                    if(didTakeDamage) {
+                    if(!didTakeDamage) {
+                        return false;
+                    } else if(enemy.IsDead) {
+                        XP += 20 * enemy.Level;
+                    } else if(didTakeDamage) {
                         XP += 10 * enemy.Level;
-                        return true;
                     }
+                    return true;
                 }
             }
             return false;
@@ -213,6 +218,34 @@ namespace taleworlds_minigame {
             return Location.ToString();
         }
 
+        public string LookNorth() {
+            if(IsDead) {
+                return "Agent is dead";
+            }
+            return LookInDirection(Direction.Up).ToString();
+        }
+
+        public string LookSouth() {
+            if(IsDead) {
+                return "Agent is dead";
+            }
+            return LookInDirection(Direction.Down).ToString();
+        }
+
+        public string LookEast() {
+            if(IsDead) {
+                return "Agent is dead";
+            }
+            return LookInDirection(Direction.Right).ToString();
+        }
+
+        public string LookWest() {
+            if(IsDead) {
+                return "Agent is dead";
+            }
+            return LookInDirection(Direction.Left).ToString();
+        }
+
         public override string ToString() {
             return "Agent " + Id + " at " + Location.X + ", " + Location.Y + " HP: " + HP + "/" + MaxHP + " Level: " + Level + " XP: " + XP;
         }
@@ -222,56 +255,13 @@ namespace taleworlds_minigame {
             public int Damage { get; set; }
         }
         
-        private Tile LookInDirection(Direction direction) {
+        private Map.Tile LookInDirection(Direction direction) {
             if (Location == null || IsDead) {
                 return null;
             }
             return Game.CurrentGame.Map.GetAdjacentTile(Location, direction);
         }
 
-        public int LookNorth() {
-            return EvaluateTile(LookInDirection(Direction.Up));
-        }
 
-        public int LookSouth() {
-            return EvaluateTile(LookInDirection(Direction.Down));
-        }
-
-        public int LookEast() {
-            return EvaluateTile(LookInDirection(Direction.Right));
-        }
-
-        public int LookWest() {
-            return EvaluateTile(LookInDirection(Direction.Left));
-        }
-        
-        private string EvaluateTile(Tile tile) {
-            if (tile == null) {
-                return "No tile in that direction.";
-            }
-            int enemyCount = tile.Agents.Count(a => a.IsEnemy && !a.IsDead);
-            if (enemyCount > 0) {
-                return $"There are {enemyCount} enemies to the {tile.DirectionFrom(Location)}.";
-            } else {
-                return $"There are no enemies to the {tile.DirectionFrom(Location)}.";
-            }
-        }
-        
-        public void DecideNextMove() {
-            var options = new Dictionary<Direction, int> {
-                { Direction.Up, LookNorth() },
-                { Direction.Down, LookSouth() },
-                { Direction.Left, LookWest() },
-                { Direction.Right, LookEast() }
-            };
-
-            // Choose the direction with the fewest enemies
-            var bestOption = options.OrderBy(opt => opt.Value).FirstOrDefault().Key;
-
-            // Perform the move
-            Move(bestOption);
-        }
-
-        
     }
 }

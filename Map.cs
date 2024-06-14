@@ -55,10 +55,10 @@ namespace taleworlds_minigame {
                     newX += 1;
                     break;
                 case Direction.Up:
-                    newY += 1;
+                    newY -= 1;
                     break;
                 case Direction.Down:
-                    newY -= 1;
+                    newY += 1;
                     break;
             }
 

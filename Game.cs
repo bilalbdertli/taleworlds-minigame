@@ -34,7 +34,7 @@ namespace taleworlds_minigame {
         }
 
         public void SpawnEnemy(int x, int y, int level = 1) {
-            _player = SpawnAgent(x, y, level, true);
+            SpawnAgent(x, y, level, true);
         }
     }
 }
